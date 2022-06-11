@@ -6,7 +6,7 @@
 /*   By: seushin <seushin@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 02:36:55 by seushin           #+#    #+#             */
-/*   Updated: 2022/06/11 13:08:14 by seushin          ###   ########.fr       */
+/*   Updated: 2022/06/11 13:45:41 by seushin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,15 @@ t_list	*parse_cmd(int argc, char *argv[], char *envp[])
 	while (i < argc - 1)
 	{
 		cmd = create_cmd();
-		cmd->token = parse_token(argv[i++], envp);
+		if (cmd)
+			cmd->token = parse_token(argv[i++], envp);
 		new = ft_lstnew(cmd);
-		if (new == NULL)
+		ft_lstadd_back(&res, new);
+		if (cmd == NULL || cmd->token == NULL || new == NULL)
 		{
 			ft_lstclear(&res, free_cmd);
 			return (NULL);
 		}
-		ft_lstadd_back(&res, new);
 	}
 	return (res);
 }
