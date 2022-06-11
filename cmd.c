@@ -6,7 +6,7 @@
 /*   By: seushin <seushin@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 02:36:55 by seushin           #+#    #+#             */
-/*   Updated: 2022/06/11 02:36:57 by seushin          ###   ########.fr       */
+/*   Updated: 2022/06/11 10:29:53 by seushin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ t_cmd	*create_cmd(void)
 	t_cmd	*res;
 
 	res = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
-	if (res == NULL)
-		return (NULL);
 	return (res);
 }
 
@@ -31,13 +29,15 @@ void	free_cmd(void *cmd)
 	t_cmd	*c;
 
 	c = cmd;
-	ft_free_strs(c->token);
+	if (c)
+		ft_free_strs(c->token);
 	free(c);
 }
 
 t_list	*parse_cmd(int argc, char *argv[], char *envp[])
 {
 	t_list	*res;
+	t_list	*new;
 	t_cmd	*cmd;
 	int		i;
 
@@ -47,7 +47,13 @@ t_list	*parse_cmd(int argc, char *argv[], char *envp[])
 	{
 		cmd = create_cmd();
 		cmd->token = parse_token(argv[i++], envp);
-		ft_lstadd_back(&res, ft_lstnew(cmd));
+		new = ft_lstnew(cmd);
+		if (new == NULL)
+		{
+			ft_lstclear(&res, free_cmd);
+			return (NULL);
+		}
+		ft_lstadd_back(&res, new);
 	}
 	return (res);
 }

@@ -6,13 +6,14 @@
 /*   By: seushin <seushin@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 02:36:58 by seushin           #+#    #+#             */
-/*   Updated: 2022/06/11 02:37:00 by seushin          ###   ########.fr       */
+/*   Updated: 2022/06/11 13:01:05 by seushin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <errno.h>
 
 int	dup_pipe(int in, int out)
 {
@@ -43,7 +44,7 @@ int	exec(t_cmd *cmd, int input_fd, char *envp[])
 			close(cmd->fd[0]);
 		execve(cmd->token[0], cmd->token, envp);
 		perror("execve: command not found");
-		exit(127);
+		exit(errno);
 	}
 	else
 	{
