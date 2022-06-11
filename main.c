@@ -6,13 +6,13 @@
 /*   By: seushin <seushin@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 02:36:51 by seushin           #+#    #+#             */
-/*   Updated: 2022/06/11 13:03:39 by seushin          ###   ########.fr       */
+/*   Updated: 2022/06/11 13:07:51 by seushin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
+#include "exec.h"
 #include "libft.h"
-#include "pipex.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/wait.h>

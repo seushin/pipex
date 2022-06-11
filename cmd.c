@@ -6,13 +6,13 @@
 /*   By: seushin <seushin@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 02:36:55 by seushin           #+#    #+#             */
-/*   Updated: 2022/06/11 10:29:53 by seushin          ###   ########.fr       */
+/*   Updated: 2022/06/11 13:08:14 by seushin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd.h"
+#include "parse.h"
 #include "libft.h"
-#include "pipex.h"
 #include <stdio.h>
 #include <unistd.h>
 
