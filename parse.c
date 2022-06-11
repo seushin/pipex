@@ -6,38 +6,40 @@
 /*   By: seushin <seushin@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 02:37:04 by seushin           #+#    #+#             */
-/*   Updated: 2022/06/11 02:37:05 by seushin          ###   ########.fr       */
+/*   Updated: 2022/06/11 13:40:16 by seushin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
-#include "libft.h"
 
-static char	**split_env_value(const char *pathEnv, const char c)
+static char	**split_path(char *path, const char c)
 {
 	char	**res;
-	char	*findEqSign;
+	char	*eq_sign;
 
-	findEqSign = ft_strchr(pathEnv, '=');
-	if (findEqSign == NULL)
+	eq_sign = ft_strchr(path, '=');
+	if (eq_sign == NULL)
 		return (NULL);
-	if (*(++findEqSign) == '\0')
+	path = eq_sign + 1;
+	if (*path == '\0')
 		return (NULL);
-	res = ft_split(findEqSign, c);
+	res = ft_split(path, c);
 	return (res);
 }
 
-static char	**parse_env_path(char **envp, const char *env)
+static char	**parse_env_path(char **envp)
 {
-	int	i;
+	const char	*PATH = "PATH";
+	const int	path_len = ft_strlen(PATH);
+	int			i;
 
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strncmp(envp[i], env, ft_strlen(env)) == 0)
-			return (split_env_value(envp[i], ':'));
+		if (ft_strncmp(envp[i], PATH, path_len) == 0)
+			return (split_path(envp[i], ':'));
 		i++;
 	}
 	return (NULL);
@@ -52,7 +54,7 @@ static char	*join_path(const char *dir, const char *filename)
 	return (path);
 }
 
-static char	*parse_pathname(char *filename, char *envp[])
+static char	*find_pathname(char *filename, char *envp[])
 {
 	char	*res;
 	char	**paths;
@@ -61,8 +63,8 @@ static char	*parse_pathname(char *filename, char *envp[])
 	if (filename == NULL)
 		return (NULL);
 	if (filename[0] == '/' || filename[0] == '.')
-		return (ft_strdup(filename));
-	paths = parse_env_path(envp, "PATH");
+		return (NULL);
+	paths = parse_env_path(envp);
 	if (paths == NULL)
 		return (NULL);
 	res = NULL;
@@ -90,7 +92,7 @@ char	**parse_token(char *command, char *envp[])
 	token = ft_split(command, ' ');
 	if (token == NULL)
 		return (NULL);
-	pathname = parse_pathname(token[0], envp);
+	pathname = find_pathname(token[0], envp);
 	if (pathname)
 	{
 		free(token[0]);
